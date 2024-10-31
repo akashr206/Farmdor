@@ -1,0 +1,172 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    /* Dark background */
+    color: #ffffff;
+    /* Light text for readability */
+  }
+
+  .section-title {
+    margin-bottom: 40px;
+    font-size: 36px;
+    font-weight: bold;
+    color: #66bb6a;
+    /* Green highlight */
+    text-align: center;
+  }
+
+  .highlight {
+    color: #66bb6a;
+    /* Green accent for important text */
+    font-weight: bold;
+  }
+
+  .feature-box {
+    padding: 20px;
+    background-color: #2c2c2c;
+    border-radius: 10px;
+    margin: 8px;
+  }
+
+  .footer {
+    background-color: #0d0d0d;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .row {
+    justify-content: center;
+  }
+
+  .feature-box h5 {
+    font-weight: 700;
+  }
+
+  a {
+    color: #66bb6a;
+    /* Green for links */
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #81c784;
+    /* Slightly brighter on hover */
+  }
+
+  .logo1 {
+    border-radius: 50%;
+    margin: 15px;
+  }
+
+  #in-sections {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+
+  }
+
+  .reg {
+    background-color: #272727;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(180, 180, 180, 0.5);
+    max-width: 550px;
+    min-height: 300px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 20px;
+  }
+
+  @media (max-width:768px) {
+    #in-sections {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .section {
+      margin: 15px;
+    }
+  }
+</style>
+
+
+<div class="container">
+  <section class="container my-5">
+    <div class="about-content">
+      <img class=" logo1" src="/logos/farmdor.webp" width="120px" height="120px">
+      <h1 style="margin-top: 0;">
+        <%= title %>
+      </h1>
+      <p>Welcome to <span class="highlight">FARMDOR</span>, Where Farmers Embrace Innovation. Our mission is to
+        revolutionize the agricultural marketplace by creating a
+        transparent, efficient, and sustainable system that benefits both farmers and large businesses.
+      </p>
+    </div>
+  </section>
+  <!-- Farmer Section -->
+  <div id="in-sections" class="container my-5">
+    <div class="row text-center">
+        <!-- For Farmers Section -->
+        <div class="col-md-6 mb-4">
+            <div class="section reg p-4 h-100 text-light rounded shadow-sm">
+                <h2 class="mb-3">For Farmers</h2>
+                <p>Are you a farmer wanting to connect with local consumers or vendors? Register your farm and reach your market directly.</p>
+                <a href="/register?role=farmer">
+                    <button type="button" class="btn btn-success btn-lg">Join as Farmer</button>
+                </a>
+            </div>
+        </div>
+
+        <!-- For Companies Section -->
+        <div class="col-md-6 mb-4">
+            <div class="section reg p-4 h-100 text-light rounded shadow-sm">
+                <h2 class="mb-3">For Companies</h2>
+                <p>Is your company looking to source fresh produce directly from farmers or manage large-scale product acquisitions? Partner with us today!</p>
+                <a href="/register?role=company">
+                    <button type="button" class="btn btn-success btn-lg">Register as Company</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+  <section class="container my-5">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="section-title">Our Vision</div>
+        <p>At <span class="highlight">FARMDOR</span>, we believe in a future where farmers are empowered to reach
+          larger markets, minimize wastage, and make agriculture more sustainable. We foster a system that
+          supports local economies and promotes fair trade practices.</p>
+      </div>
+      <div class="col-md-6">
+        <div class="section-title">What We Do</div>
+        <p>We provide a platform for farmers to list their fresh produce, enabling direct connections with
+          companies.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="container my-5 fbox">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="feature-box">
+          <h5>For Farmers</h5>
+          <p>Empower farmers to list and showcase their yield, manage products, and connect directly with
+            companies
+            without any middlemen.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-box">
+          <h5>For Companies</h5>
+          <p>Offer companies a reliable way to source fresh, locally-grown produce, ensuring quality at
+            best prices through location-based searches.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

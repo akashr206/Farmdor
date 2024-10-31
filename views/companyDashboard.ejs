@@ -1,0 +1,198 @@
+<style>
+    .boxes {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .box {
+        padding: 15px;
+        border-radius: 4px;
+        width: 80%;
+        margin: 10px;
+        background-color: rgb(41, 41, 41);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .first {
+        text-align: start;
+        margin-right: 10px;
+    }
+
+    .first p {
+        margin: 0;
+    }
+
+    .second {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .second p {
+        color: rgb(255, 187, 0);
+        width: max-content;
+    }
+
+    .products {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .slides {
+        width: 95%;
+        display: flex;
+        overflow-x: scroll;
+        white-space: nowrap;
+    }
+
+    .slides>* {
+        flex: 0 0 auto;
+        margin: 10px;
+    }
+
+    .card {
+        background-color: rgb(45, 51, 56);
+        color: white;
+    }
+
+    @media (max-width: 678px) {
+        .box {
+            width: 90%;
+        }
+
+        .first p {
+            font-size: 15px;
+        }
+
+        .second {
+            flex-direction: column;
+        }
+    }
+</style>
+
+
+<section>
+    <h2 style="color:rgb(35, 173, 35);margin-top: 10px 0">Welcome <%= companyName %>
+    </h2>
+</section>
+
+<section class="products container">
+    <h3>Nearby Products</h3>
+    <div style="width: 90%;border: 0.5px rgb(98, 98, 98) solid;"></div>
+    <div class="slides">
+        <% let flag=0 %>
+            <% products.forEach(product=> { %>
+                
+                    <div class="col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= product.name %>
+                                </h5>
+                                <p class="card-text">Price: ₹<%= product.price %>/kg
+                                </p>
+                                <p class="card-text">Quantity: <%= product.quantity %>kg</p>
+                                <p class="card-text">Location: <%= product.city %></p>
+                                <button class="btn btn-success connect"
+                                    onclick='connect("<%=product._id.toString()%>")'>Connect</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <% flag=1 %>
+                            <% }); %>
+                                <% if (flag==0) { %>
+                                    <h2>No Nearby products</h2>
+                                    <% } %>
+    </div>
+</section>
+
+<div class="boxes">
+    <h3>Connections</h3>
+    <div style="width: 90%;border: 0.5px rgb(98, 98, 98) solid;"></div>
+    <% if (requests.length> 0) { %>
+        <% requests.forEach(connection=> { %>
+            <div class="box">
+                <% if (connection.status==='pending' ) { %>
+                    <div class="first">
+                        <h4>
+                            <%=connection.toName%>
+                        </h4>
+                        <p style="color: orange;">
+                            Your request is pending
+                        </p>
+                    </div>
+                    <div class="second">
+                        <p>· Pending</p>
+                    </div>
+                    <% } else if(connection.status==='accepted' ) {%>
+                        <div class="first">
+                            <h4>
+                                <%=connection.toName%>
+                            </h4>
+                            <p style="color: rgb(16, 177, 16);">Your request has been Accepted.</p>
+                        </div>
+                        <div class="second">
+                            <button type="button" onclick="contact('<%=connection.from%>')"
+                                class="btn btn-success">Contact</button>
+                        </div>
+                        <% } else {%>
+                            <div class="first">
+                                <h4>
+                                    <%=connection.toName%>
+                                </h4>
+                                <p style="color: red;">Your request has been Rejected</p>
+                            </div>
+                            <div class="second">
+                                <p style="color: red;">· Rejected</p>
+                            </div>
+                            <% } %>
+            </div>
+
+            <% }); %>
+                <% } else {%>
+                    <h2 style="margin: 20px 0;">You haven't sent any connections yet</h2>
+                    <% } %>
+
+</div>
+
+<script>
+    async function connect(id) {
+        const res = await fetch('/connect', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'to': id
+            })
+        })
+        let data = await res.json();
+        alert(data.message)
+    }
+
+    async function contact(id) {
+        let res = await fetch('company/contact', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: id
+            })
+        })
+        if (res.ok) {
+            let data = await res.json();
+            let reciever = data.reciever
+            let mailLink = `mailto:${reciever}`
+            window.location.href = mailLink
+        }
+
+    }
+</script>

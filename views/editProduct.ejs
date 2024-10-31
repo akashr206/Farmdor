@@ -1,0 +1,66 @@
+<style>
+    .container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #editForm{
+        border: 1px gray solid;
+        border-radius: 5px;
+        padding: 25px;
+        align-self: center;
+        width: max-content;
+    }
+
+    #editForm input{
+        background-color: transparent;
+        border: 0.5px rgb(96, 96, 96) solid;
+        position: relative;
+        color: whitesmoke;
+        
+    }
+
+    #editForm .mb-3{
+       display: flex;
+       flex-direction: column;
+       align-items: start;
+       margin-bottom: 4px;
+       width: 300px;
+    }
+
+    #editForm label{
+        width: max-content;
+        margin-bottom: 2px;
+    }
+    .addDiv{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+</style>
+
+
+
+<div class="container ">
+    <h1>Edit Product</h1>
+    <form action="/manageproducts/edit/<%= product._id %>" method="POST" id="editForm">
+        <div class="mb-3">
+            <label for="name" class="form-label">Product Name</label>
+            <input type="text" class="form-control" name="name" value="<%= product.name %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" class="form-control" name="price" value="<%= product.price %>" required>
+        </div>
+        <div class=" mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <div class="input-group">
+                <input type="number" id="quantity" class="form-control" value="<%= product.quantity %>" name="quantity" aria-label="Quantity input" required>
+                <span class="input-group-text" id="basic-addon2">kg</span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Update Product</button>
+    </form>
+</div>

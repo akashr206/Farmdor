@@ -1,0 +1,153 @@
+<style>
+    .boxes {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .box {
+        padding: 15px;
+        border-radius: 4px;
+        width: 80%;
+        margin: 10px;
+        background-color: rgb(41, 41, 41);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .first {
+        text-align: start;
+        margin-right: 10px;
+    }
+
+    .first p {
+        margin: 0;
+    }
+
+    .second {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    @media (max-width: 678px) {
+        .box {
+            width: 90%;
+        }
+
+        .first p {
+            font-size: 15px;
+        }
+
+        .second {
+            flex-direction: column;
+        }
+    }
+</style>
+
+
+
+<div class="boxes">
+    <% if (connections.length> 0) { %>
+        <% connections.forEach(connection=> { %>
+            <div class="box">
+                <% if (connection.status==='pending' ) { %>
+                    <div class="first">
+                        <h4>
+                            <%=connection.fromName%>
+                        </h4>
+                        <p>
+                            <%=connection.fromName%> is interested in your product, would you like to accept?
+                        </p>
+                    </div>
+                    <div class="second">
+                        <button type="button" onclick="accept('<%=connection.from%>','<%= connection.to%>')"
+                            class="btn btn-outline-success">Accept</button>
+                        <button type="button" onclick="reject('<%=connection.from%>','<%= connection.to%>')" id="reject"
+                            class="btn btn-outline-danger">Reject</button>
+                    </div>
+                    <% } else if(connection.status==='accepted' ) {%>
+                        <div class="first">
+                            <h4>
+                                <%=connection.fromName%>
+                            </h4>
+                            <p>You have successfully accepted the request, to contact the company click on contact.</p>
+                        </div>
+                        <div class="second">
+                            <button type="button" onclick="contact('<%=connection.to%>')"
+                                class="btn btn-success">Contact</button>
+                        </div>
+                        <% } else {%>
+                            <div class="first">
+                                <h4>
+                                    <%=connection.fromName%>
+                                </h4>
+                                <p>You have Rejected the request</p>
+                            </div>
+                            <div class="second">
+                                <button type="button" id="connect" onclick="contact('<%=connection.from%>')"
+                                    class="btn btn-danger">Rejected</button>
+                            </div>
+                            <% } %>
+            </div>
+
+            <% }); %>
+                <% } else {%>
+                    <h2>You have no connections to review</h2>
+                    <% } %>
+
+</div>
+
+<script>
+    async function accept(fromId,toId) {
+        let res = await fetch('requests/accept', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                from: fromId,
+                to : toId
+            })
+        })
+        if (res.ok) {
+            window.location.reload()
+        }
+
+    }
+    async function reject(fromId,toId) {
+        let res = await fetch('requests/reject', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                from: fromId,
+                to : toId
+            })
+        })
+        if (res.ok) {
+            window.location.reload()
+        }
+
+    }
+
+    async function contact(id){
+        let res = await fetch('contact',{
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id : id
+            })
+        })
+        let data = await res.json();
+        let reciever = data.reciever
+        let mailLink = `mailto:${reciever}`
+        window.location.href = mailLink
+    }
+
+</script>

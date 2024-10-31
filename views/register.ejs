@@ -1,0 +1,193 @@
+<style>
+    body {
+    background-color: #121212;
+    /* Dark background */
+    color: white;
+    /* White text */
+  }
+  
+  .regi{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 15px 0;
+    border: 0.5px gray solid;
+    border-radius: 5px;
+    margin: 15px auto;
+    max-width: 330px;
+    padding: 15px;
+  }
+
+  .form-register {
+    margin: 15px 0;
+    border: 0.5px gray solid;
+    border-radius: 5px;
+    margin: 15px auto;
+    max-width: 330px;
+    padding: 20px;
+  }
+
+  .form-register .form-floating:focus-within {
+    z-index: 2;
+  }
+
+  .form-register input[type="text"],
+  .form-register input[type="email"],
+  .form-register input[type="password"] {
+    background-color: #333;
+    /* Darker background for inputs */
+    color: white;
+    /* White input text */
+    border: 1px solid #444;
+    padding-top: 20px;
+    /* Subtle border */
+  }
+
+  .form-floating {
+    margin-bottom: 10px;
+  }
+
+  .form-register input[type="text"]:focus,
+  .form-register input[type="email"]:focus,
+  .form-register input[type="password"]:focus {
+    background-color: #444;
+    /* Lighter black when focused */
+    border-color: #555;
+    /* Subtle highlight border */
+  }
+
+  .form-floating>label {
+    color: #aaa;
+    /* Lighter text for labels */
+  }
+
+  .form-register button {
+    background-color: #1a73e8;
+    /* Blue button */
+    border: none;
+  }
+
+  .form-register button:hover {
+    background-color: #155ab6;
+    /* Darker blue on hover */
+  }
+
+  .logo1 {
+    border-radius: 50%;
+  }
+  </style>
+</head>
+<body class="text-center">
+  
+  <div class="form-register">
+    <img class="mb-4 logo1" src="/logos/farmdor.webp" alt="" width="72px" height="72px">
+    <h1 class="h3 mb-3 fw-normal">Register</h1>
+    <form id="registerForm">
+      
+      
+      <!-- Error message display -->
+      <div id="error-message" class="text-danger mb-3"></div>
+      
+      <div class="form-floating">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+        <label for="name">Name</label>
+      </div>
+      <div class="form-floating">
+        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+        <label for="email">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+        <label for="password">Password</label>
+      </div>
+      
+      <!-- Hidden field for role -->
+      <input type="hidden" name="role" value="<%= role%>">
+      
+      <!-- Hidden fields for coordinates (filled by Geolocation API) -->
+      <input type="hidden" id="latitude" name="latitude" required>
+      <input type="hidden" id="longitude" name="longitude" required>
+
+      <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Register</button>
+    </form>
+</div>
+<div class="text-center">
+    <p>Already have an Account? <a href="/login" style="color: rgb(38, 182, 38);text-decoration: none;"> Login</a>.</p>
+</div>
+
+<script>
+    // Function to get the user's location using the Geolocation API
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError,{
+            enableHighAccuracy: true, 
+            timeout: 10000, 
+            maximumAge: 0 
+        });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    // Callback for successful geolocation
+    function showPosition(position) {
+        document.getElementById("latitude").value = position.coords.latitude;
+        document.getElementById("longitude").value = position.coords.longitude;
+    }
+
+    // Handle geolocation errors
+    function showError(error) {
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                alert("In order to proceed with registeration process we need your location access.");
+
+                break;
+            case error.POSITION_UNAVAILABLE:
+                alert("Location information is unavailable.");
+                break;
+            case error.TIMEOUT:
+                alert("The request to get user location timed out.");
+                break;
+            case error.UNKNOWN_ERROR:
+                alert("An unknown error occurred.");
+                break;
+        }
+    }
+
+    // Automatically get the location when the page loads
+    window.onload = function () {
+        getLocation();
+    }
+
+    // Handle form submission
+    document.getElementById("registerForm").onsubmit = async function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert('Registration successful!'); // Handle success (you can redirect here)
+            } else {
+                const error = await response.json();
+                alert(`Error: ${error.message}`); // Handle error response
+            }
+        } catch (error) {
+            console.error('Error during registration:', error);
+            alert('There was an error during registration. Please try again.');
+        }
+    };
+</script>

@@ -1,0 +1,165 @@
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+
+    #map {
+        width: 80%;
+        height: 400px;
+        border: 1px whitesmoke solid;
+        border-radius: 14px;
+        filter: invert(0.8);
+        box-shadow:
+            0 0 10px 1px #fff,
+            0 0 10px 2px rgb(11, 163, 0);
+        margin: 20px;
+
+    }
+
+   
+    .cards {
+        display: flex;
+    }
+
+    .card {
+        padding: 15px;
+        margin: 10px;
+        display: flex;
+        font-size: 20px;
+        flex-direction: column;
+        align-items: center;
+
+    }
+
+    .card {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        /* Slight zoom on hover */
+        box-shadow: 0 8px 15px rgba(0, 123, 0, 0.4);
+        /* Glowing effect */
+    }
+
+    .card-body h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .card-body h2 {
+        font-size: 3rem;
+        /* Larger number size for emphasis */
+    }
+
+    .col-md-4 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    @media (max-width:768px) {
+        .cards {
+            flex-direction: column;
+        }
+
+        .card {
+            width: 220px;
+            height: 180px;
+        }
+
+        .card h2 {
+            margin: auto 0;
+        }
+
+        .card-body h2 {
+            font-size: 2.5rem;
+        }
+
+        #map {
+            width: 330px;
+            height: 310px;
+        }
+
+        
+
+    }
+</style>
+
+<% let total_revenue = 0  %>
+<% let total_quantity = 0 %>
+<% for( let i = 0; i< products.length;i++ ) { %>
+<% let p = products[i] %>
+<% total_revenue = total_revenue + (p.price * p.quantity) %>
+<% total_quantity += p.quantity %>
+<% } %>
+
+<div class="container mt-5">
+    <h1>Welcome, <%= farmerName %>
+    </h1>
+    <div class="container my-5">
+        <div class="row text-center">
+            <!-- First Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-white bg-success shadow h-100">
+                    <div class="card-body">
+                        <h3>Expected Revenue</h3>
+                        <h2 class="display-4">
+                            
+                            ₹<%= total_revenue %>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-white bg-warning shadow h-100">
+                    <div class="card-body">
+                        <h3>Total Products</h3>
+                        <h2 class="display-4">
+                            <%= products.length %>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Third Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-white bg-primary shadow h-100">
+                    <div class="card-body">
+                        <h3>Total Quantity</h3>
+                        <h2 class="display-4">
+                            <%= total_quantity %>kg
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container m-3">
+        <h3>Your Location </h3>
+        <div id="map"></div>
+    </div>
+</div>
+
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    // Initialize the map and set its view to a chosen geographical point and zoom level
+    var map = L.map('map').setView([<%=location %>], 14);  // Default to Bangalore
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var marker = L.marker([<%= location %>]).addTo(map);
+
+    // Optionally, you can add a popup to the marker
+    marker.bindPopup("<b>Your location.</b>").openPopup();
+</script>

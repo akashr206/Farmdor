@@ -1,0 +1,31 @@
+.logo{
+    width: 30px;
+    border-radius: 50%;
+}
+
+.navbar-brand{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.header{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
+
+
+body{
+    padding-top: 60px;
+    background-color: rgb(28, 28, 28);
+    color: rgb(222, 222, 222);
+    font-family: "Work Sans", sans-serif;
+}
+
+.nav-link{
+    padding: 5px 0;
+    margin:0 8px;
+}
+

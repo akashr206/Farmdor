@@ -1,0 +1,147 @@
+<style>
+    #addForm {
+        border: 1px gray solid;
+        border-radius: 5px;
+        padding: 25px;
+        position: relative;
+    }
+
+    #addForm input {
+        background-color: transparent;
+        border: 0.5px rgb(96, 96, 96) solid;
+        position: relative;
+        color: whitesmoke;
+    }
+
+    #addForm .mb-3 {
+        display: flex;
+        flex-direction: column;
+
+        align-items: start;
+        margin-bottom: 4px;
+    }
+
+    #addForm label {
+        width: max-content;
+        margin-bottom: 2px;
+    }
+
+    #addDiv {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    #line {
+        width: 90%;
+        border: 0.1px rgb(188, 188, 188) solid;
+        border-radius: 50%;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #cross {
+        width: 16px;
+        height: 16px;
+        border: 0.5px white solid;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        cursor: pointer;
+    }
+
+    #basic-addon2{
+        background-color: transparent;
+        color: white;
+        border: 0.1px rgb(96, 96, 96) solid;
+    }
+</style>
+
+
+<div class="my-4">
+    <h2 style="margin-bottom: 10px;">Your Products</h2>
+    <% if (products.length===0) { %>
+        <div id="line"></div>
+        <h3 style="color: rgb(227, 210, 168);margin: 15px 0;">No Products to show</h3>
+        <div id="line"></div>
+        <% } else {%>
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% products.forEach(product=> { %>
+                        <tr>
+                            <td>
+                                <%= product.name %>
+                            </td>
+                            <td>₹<%= product.price %>
+                            </td>
+                            <td>
+                                <%= product.quantity %> kg
+                            </td>
+                            <td>
+                                <a href="/manageproducts/edit/<%= product._id %>" class="btn btn-primary">Edit</a>
+                                <form action="/manageproducts/delete/<%= product._id %>" method="POST"
+                                    style="display: inline;">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+
+            <% } %>
+</div>
+
+<div class="my-4" id="addDiv" hidden>
+    <form action="/manageproducts/add" method="POST" id="addForm">
+        <span id="cross">&times;</span>
+        <h2>Add New Product</h2>
+        <div class="mb-3">
+            <label for="name" class="form-label">Product Name</label>
+            <input type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input min="1" type="number" class="form-control" name="price" required>
+        </div>
+
+        <div class=" mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <div class="input-group">
+                <input min="1" type="number" id="quantity" class="form-control" name="quantity" aria-label="Quantity input" required>
+                <span class="input-group-text" id="basic-addon2">kg</span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Add Product</button>
+    </form>
+</div>
+
+<button id="addbtn" type="button" class="btn btn-success">Add Product</button>
+
+<script>
+    let addDiv = document.getElementById('addDiv')
+    let addbtn = document.getElementById('addbtn')
+    let cross = document.getElementById('cross')
+    addbtn.addEventListener('click', () => {
+        addDiv.hidden = false
+        addbtn.hidden = true
+    })
+    cross.addEventListener('click', () => {
+        addDiv.hidden = true
+        addbtn.hidden = false
+    })
+</script>

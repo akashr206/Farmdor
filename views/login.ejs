@@ -1,0 +1,165 @@
+<style>
+  body {
+    background-color: #121212;
+    /* Dark background */
+    color: white;
+    /* White text */
+  }
+
+  .regi {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 15px 0;
+    border: 0.5px gray solid;
+    border-radius: 5px;
+    margin: 15px auto;
+    max-width: 330px;
+    padding: 15px;
+  }
+
+  .form-signin {
+    margin: 15px 0;
+    border: 0.5px gray solid;
+    border-radius: 5px;
+    margin: 15px auto;
+    max-width: 330px;
+    padding: 15px;
+  }
+
+  .form-signin .form-floating:focus-within {
+    z-index: 2;
+  }
+
+  .form-signin input[type="email"],
+  .form-signin input[type="password"] {
+    background-color: #333;
+    /* Darker background for inputs */
+    color: white;
+    /* White input text */
+    border: 1px solid #444;
+    /* Subtle border */
+  }
+
+  .form-floating {
+    margin-bottom: 10px;
+  }
+
+  .form-signin input[type="email"]:focus,
+  .form-signin input[type="password"]:focus {
+    background-color: #444;
+    /* Lighter black when focused */
+    border-color: #555;
+    /* Subtle highlight border */
+  }
+
+  .form-floating>label {
+    color: #aaa;
+    /* Lighter text for labels */
+  }
+
+  .form-signin button {
+    background-color: #1a73e8;
+    /* Blue button */
+    border: none;
+  }
+
+  .form-signin button:hover {
+    background-color: #155ab6;
+    /* Darker blue on hover */
+  }
+
+  .logo1 {
+    border-radius: 50%;
+  }
+
+  .line {
+    width: 40%;
+    border: 0.5px gray solid;
+    height: 0;
+  }
+
+  .or{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
+
+<div class="form-signin">
+  <img class="mb-4 logo1" src="/logos/farmdor.webp" alt="" width="72px" height="72px">
+  <h1 class="h3 mb-3 fw-normal">Login</h1>
+  <form id="loginForm">
+
+    <!-- Error message display -->
+    <div id="error-message" class="text-danger mb-3"></div>
+
+    <div class="form-floating">
+      <input type="email" autocomplete="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+      <label for="email">Email address</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" autocomplete="current-password" class="form-control" id="password" name="password" placeholder="Password" required>
+      <label for="password">Password</label>
+    </div>
+
+    <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Login</button>
+  </form>
+</div>
+<div class="regi">
+  <p>Not Registered yet?</p>
+  <a href="/register?role=farmer" class="w-35"><button type="button" class="btn btn-success">Join as
+      Farmer</button></a>
+  <div class="or">
+    <div class="line"></div>
+    <div style="margin: 0 5px;">OR</div>
+    <div class="line"></div>
+  </div>
+  <a href="/register?role=company" class="w-35 mb-2"><button type="button" class="btn btn-success">Register as
+      Company</button></a>
+</div>
+
+
+
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('loginForm').addEventListener('submit', async function (event) {
+      event.preventDefault(); // Prevent the form from submitting the traditional way
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // Sending POST request to login route
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Redirect based on user role
+          if (data.role === 'farmer') {
+            window.location.href = '/farmer'; // Change this to your actual farmer dashboard route
+          } else if (data.role === 'company') {
+            window.location.href = '/company'; // Change this to your actual company dashboard route
+          } else {
+            document.getElementById('error-message').textContent = 'Role not recognized';
+          }
+        } else {
+          // Handle errors
+          document.getElementById('error-message').textContent = data.message || 'Error in login, please try again';
+        }
+      } catch (error) {
+        // Catch any network errors
+        document.getElementById('error-message').textContent = 'Error: ' + error.message;
+      }
+    });
+  });
+</script>

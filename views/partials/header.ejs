@@ -1,0 +1,14 @@
+
+<nav class="navbar header nav-underline navbar-expand-lg bg-body-tertiary " data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      <img src="/logos/farmdor.webp" class="logo" alt="logo"> FARMDOR</a>
+    <div>
+      <% if (typeof login !=='undefined' ) {%>
+          <a type="button" class="btn btn-success" id="logBtn" href="/login" style="color: white;text-decoration: none;"
+            class="<%= page === 'login' ? 'active' : '' %>">Login</a>
+        <% } %>
+    </div>
+  </div>
+</nav>
+

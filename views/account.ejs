@@ -1,0 +1,59 @@
+<style>
+    .account{
+        background-color: rgb(36, 36, 42);
+        color: white;
+    }
+
+    .form-control{
+        background-color: rgb(58, 58, 58);
+        color: white;
+        border: none;
+        transition: 0.5s all ;
+        &:focus{
+            background-color: rgb(58, 58, 58);
+            color: white;
+            border: 0.5px white solid;
+        }
+    }
+
+    form{
+        display: flex;
+        flex-direction: column;
+    }
+
+    label{
+        align-self: flex-start;
+    }
+
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card account">
+                <div class="card-header text-center">
+                    <h3>Account Details</h3>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" value="<%= user.name %>" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" value="<%= user.email %>" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <input type="text" class="form-control" id="role" value="<%= user.role %>" readonly>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

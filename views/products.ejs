@@ -1,0 +1,103 @@
+<!-- Leaflet CSS -->
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-gap: 5px;
+  }
+
+  .product {
+    background-color: red;
+  }
+
+  .search-bar {
+    border: 0.5px gray solid;
+  }
+
+  .search-bar::placeholder {
+    color: rgb(193, 193, 193);
+  }
+
+  .connect {
+    padding: 3px;
+    width: 90%;
+  }
+
+  .filter a {
+    color: white;
+  }
+</style>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<h1>Available Products</h1>
+
+<!-- Search and Filter Form -->
+<div class="container my-4">
+  <form method="GET" action="products" class="form-inline">
+    <div class="input-group">
+      <input type="text" name="search" class="search-bar form-control bg-dark text-white" aria-label="Search products"
+        aria-describedby="button-addon2" placeholder="Search products">
+      <button type="submit" id="button-addon2" class="btn btn-outline-success">Search</button>
+    </div>
+  </form>
+</div>
+
+<div class="filter">
+  <a href="/products?range=all"><button type="button" class="btn <%= typeof range == 'undefined' || range == 'all' ? 'active' : "" %>" aria-pressed="true">All</button></a>
+  <a href="/products?range=10"><button type="button" class="btn <%= range == '10' ? 'active' : "" %>" aria-pressed="true">within 10kms</button></a>
+  <a href="/products?range=20"><button type="button" class="btn <%= range == '20' ? 'active' : "" %>">within 20kms</button></a>
+  <a href="/products?range=50"><button type="button" class="btn <%= range == '50' ? 'active' : "" %>">within 50kms</button></a>
+  <a href="/products?range=100"><button type="button" class="btn <%= range == '100' ? 'active' : "" %>">within 100kms</button></a>
+  <a href="/products?range=>100"><button type="button" class="btn <%= range == '>100' ? 'active' : "" %>">100+ kms</button></a>
+</div>
+
+<!-- Products Listing -->
+<div class="container my-4" data-bs-theme='dark'>
+  <div id="products" class="row">
+    <% if (products.length > 0) { %>
+     
+    
+    <% products.forEach(product=> { %>
+      <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= product.name %> 
+            </h5>
+            
+            <p class="card-text">Price: ₹<%= product.price %>/kg
+            </p>
+            <p class="card-text">Quantity: <%= product.quantity %>kg</p>
+            <p class="card-text">Location: <%= product.city %></p>
+            <button class="btn btn-success connect" onclick='connect("<%=product._id.toString()%>")'>Connect</button>
+            </p>
+           
+          </div>
+        </div>
+      </div>
+      <% }) %>
+      <% }else { %>
+        <h2>No Products to show</h2>
+        <% } %>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  async function connect(id) {
+    const res = await fetch('/connect', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'to': id
+      })
+    })
+    let data = await res.json();
+    alert(data.message)
+  }
+
+</script>
