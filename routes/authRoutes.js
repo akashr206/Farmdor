@@ -17,10 +17,10 @@ router.post('/register', async (req, res) => {
   const location = { type: 'Point', coordinates: [Number(req.body.longitude), Number(req.body.latitude)] };
   let response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${location.coordinates[1]}&lon=${location.coordinates[0]}&format=json`);
   let data = await response.json()
-  if(data){
+  if(data && data.address){
     var city = data.address.city || data.address.state_district
   } else {
-    var city = " "
+    var city = "NA"
   }
   
   try {
