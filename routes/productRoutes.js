@@ -1,10 +1,10 @@
-// routes/productRoutes.js
+
 const express = require('express');
 const Product = require('../models/Product');
 const router = express.Router();
 const { isAuthenticated, isFarmer } = require('../middleware/authMiddleware');
 
-// Route to display the farmer dashboard with their products
+
 router.get('/', isAuthenticated, isFarmer, async (req, res) => {
   try {
     const products = await Product.find({ farmer: req.user._id });
@@ -14,7 +14,7 @@ router.get('/', isAuthenticated, isFarmer, async (req, res) => {
   }
 });
 
-// Route to add a new product
+
 router.post('/add', isAuthenticated, isFarmer, async (req, res) => {
   const { name, price, quantity } = req.body;
   let city = req.user.city
@@ -28,13 +28,13 @@ router.post('/add', isAuthenticated, isFarmer, async (req, res) => {
       city,
     });
     await newProduct.save();
-    res.redirect('/manageproducts'); // Redirect back to the dashboard after adding the product
+    res.redirect('/manageproducts'); 
   } catch (error) {
     res.status(500).json({ message: 'Error adding product', error: error.message });
   }
 });
 
-// Route to edit a product
+
 router.get('/edit/:id', isAuthenticated, isFarmer, async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -47,7 +47,7 @@ router.get('/edit/:id', isAuthenticated, isFarmer, async (req, res) => {
   }
 });
 
-// Route to update a product
+
 router.post('/edit/:id', isAuthenticated, isFarmer, async (req, res) => {
   const { name, price, quantity } = req.body;
   try {
@@ -65,7 +65,7 @@ router.post('/edit/:id', isAuthenticated, isFarmer, async (req, res) => {
   }
 });
 
-// Route to delete a product
+
 router.post('/delete/:id', isAuthenticated, isFarmer, async (req, res) => {
 
   const product = await Product.findById(req.params.id);

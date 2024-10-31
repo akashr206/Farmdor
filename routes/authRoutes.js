@@ -4,12 +4,12 @@ const dotenv = require('dotenv');
 const User = require('../models/User');
 const router = express.Router();
 dotenv.config();
-// Generate JWT Token
+
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
-// Register Route
+
 router.post('/register', async (req, res) => {
   let { name, email, password, role } = req.body;
   name = name.replace(name[0], name[0].toUpperCase())
@@ -24,31 +24,31 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Create user
+    
     const user = await User.create({
       name,
       email,
       password,
       role,
       city,
-      location: location, // Default location if not provided
+      location: location, 
       token: ''
     });
 
-    // Generate token
+    
     const token = generateToken(user._id);
-    user.token = token; // Save token in the user's record in the database
+    user.token = token; 
     await user.save();
 
-    // Store token in cookies
+    
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      secure: process.env.NODE_ENV === 'production', 
+      maxAge: 30 * 24 * 60 * 60 * 1000, 
     });
 
 
-    // Send response
+    
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -60,7 +60,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login Route
+
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
  
@@ -68,25 +68,25 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-      // Generate token
+      
       const token = generateToken(user._id);
-      user.token = token; // Save token in user's record
+      user.token = token; 
       await user.save();
 
-      // Store token in cookies
+      
       res.cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        secure: process.env.NODE_ENV === 'production', 
+        maxAge: 30 * 24 * 60 * 60 * 1000, 
       });
 
       res.cookie('role', user.role, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        secure: process.env.NODE_ENV === 'production', 
+        maxAge: 30 * 24 * 60 * 60 * 1000, 
       });
 
-      // Send response with user info
+      
       res.json({
         _id: user._id,
         name: user.name,
@@ -104,12 +104,12 @@ router.post('/login', async (req, res) => {
 });
 
 
-// Logout Route (optional for removing token)
+
 router.post('/logout', (req, res) => {
   let token = req.cookies.token
   let role = req.cookies.role
   if (token && role) {
-    res.clearCookie('token'); // Clear token from cookies
+    res.clearCookie('token'); 
     res.clearCookie('role')
     res.json({ message: 'Logged out successfully' });
   } else {

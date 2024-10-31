@@ -1,4 +1,4 @@
-// models/Product.js
+
 const mongoose = require('mongoose');
 
 const connectSchema = new mongoose.Schema({
@@ -7,8 +7,7 @@ const connectSchema = new mongoose.Schema({
   to: {type: String, required: true},
   toName: {type: String, required: true},
   status: {type: String, required: true}
-}, { timestamps: true }); // Automatically manage createdAt and updatedAt timestamps
-
+}, { timestamps: true });
 const Connect = mongoose.model('Connect', connectSchema);
 
 module.exports = Connect;

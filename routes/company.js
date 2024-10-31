@@ -8,8 +8,8 @@ const { ObjectId } = require("mongodb")
 
 
 router.get('/', isAuthenticated, isCompany, async (req, res) => {
-    const companyName = req.user.name; // Access the company name from req.user
-    const location = req.user.location; // Example of accessing a company's data
+    const companyName = req.user.name; 
+    const location = req.user.location; 
     const roleheader = req.cookies.role
     const companyId = req.user._id.toString()
     const longitude = req.user.location.coordinates[0]

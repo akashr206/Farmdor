@@ -1,4 +1,3 @@
-// models/Product.js
 
 const mongoose = require('mongoose');
 
@@ -7,10 +6,10 @@ const productSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
   farmer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Farmer ID
-  location: { // Location as a GeoJSON object
+  location: { 
     type: {
-      type: String, // 'Point'
-      enum: ['Point'], // Specify that the type can only be 'Point'
+      type: String, 
+      enum: ['Point'], 
       required: true,
     },
     coordinates: {
@@ -19,9 +18,7 @@ const productSchema = new mongoose.Schema({
     },
   },
   city: {type: String, required: true},
-}, { timestamps: true }); // Automatically manage createdAt and updatedAt timestamps
-
-// Create 2dsphere index for geospatial queries
+}, { timestamps: true }); 
 productSchema.index({ location: '2dsphere' });
 
 const Product = mongoose.model('Product', productSchema);

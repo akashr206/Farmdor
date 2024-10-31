@@ -6,9 +6,9 @@ const Product = require('../models/Product')
 const User = require('../models/User')
 const {ObjectId} = require('mongodb')
 const { connect } = require('mongoose')
-// Farmer Dashboard route
+
 router.get('/', isAuthenticated, isFarmer, async (req, res) => {
-    const farmerName = req.user.name; // Access the farmer's name from req.user
+    const farmerName = req.user.name; 
     const farmer = req.user._id;
     const products = await Product.find({ farmer: farmer });
     const roleheader = req.user.role
