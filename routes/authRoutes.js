@@ -17,7 +17,11 @@ router.post('/register', async (req, res) => {
   const location = { type: 'Point', coordinates: [Number(req.body.longitude), Number(req.body.latitude)] };
   let response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${location.coordinates[1]}&lon=${location.coordinates[0]}&format=json`);
   let data = await response.json()
-  let city = data.address.city || data.address.state_district || " "
+  if(data){
+    var city = data.address.city || data.address.state_district
+  } else {
+    var city = " "
+  }
   
   try {
     const userExists = await User.findOne({ email });
