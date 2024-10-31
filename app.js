@@ -14,32 +14,32 @@ const User = require('./models/User');
 const Connect = require('./models/connect')
 const { ObjectId } = require('mongodb');
 const { isAuthenticated } = require('./middleware/authMiddleware');
-// Load environment variables from .env file
+
 dotenv.config();
 
-// Connect to MongoDB
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Error connecting to MongoDB:', err));
 
-// Create Express app
+
 const app = express();
 
-// Set EJS as the view engine
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Middleware to parse JSON bodies
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-// Set static folder for CSS, images, etc.
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(ejsLayouts); // Add this line
-app.set('layout', 'layouts/layout'); // Set the default layout
 
-// Routes
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(ejsLayouts); 
+app.set('layout', 'layouts/layout'); 
+
+
 app.use('/products', products)
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
@@ -47,7 +47,7 @@ app.use('/manageproducts', productRoutes);
 app.use('/company', company)
 app.use('/farmer', farmer)
 
-// Homepage route
+
 app.get('/', (req, res) => {
   let token = req.cookies.token
   const roleredirect = req.cookies.role;
@@ -60,7 +60,7 @@ app.get('/', (req, res) => {
   }
 });
 
-// Render EJS files for login and register
+
 app.get('/register', (req, res) => {
   let token = req.cookies.token;
   const roleredirect = req.cookies.role;
@@ -70,7 +70,7 @@ app.get('/register', (req, res) => {
   } else if (token && roleredirect === 'company') {
     res.redirect('/company');
   } else {
-    res.render('register', { title: 'FARMDOR · Register', role, page: 'register' }); // This will render views/register.ejs
+    res.render('register', { title: 'FARMDOR · Register', role, page: 'register' }); 
   }
 });
 
@@ -83,7 +83,7 @@ app.get('/login', async (req, res) => {
   } else if (token && roleredirect === 'company') {
     res.redirect('/company');
   } else {
-    res.render('login', { title: 'FARMDOR · Login', page: 'login' }); // This will render views/login.ejs
+    res.render('login', { title: 'FARMDOR · Login', page: 'login' }); 
   }
 });
 
