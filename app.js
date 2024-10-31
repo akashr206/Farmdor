@@ -17,7 +17,6 @@ const { isAuthenticated } = require('./middleware/authMiddleware');
 
 dotenv.config();
 
-
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Error connecting to MongoDB:', err));
@@ -25,20 +24,16 @@ mongoose.connect(process.env.MONGO_URI)
 
 const app = express();
 
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(ejsLayouts); 
 app.set('layout', 'layouts/layout'); 
-
 
 app.use('/products', products)
 app.use('/api/auth', authRoutes);
@@ -46,7 +41,6 @@ app.use('/api/products', productRoutes);
 app.use('/manageproducts', productRoutes);
 app.use('/company', company)
 app.use('/farmer', farmer)
-
 
 app.get('/', (req, res) => {
   let token = req.cookies.token
@@ -59,7 +53,6 @@ app.get('/', (req, res) => {
     res.render('index', { title: 'Welcome to FARMDOR', login: true, page: 'home', title: 'FARMDOR', showFooter: true, role: roleredirect });
   }
 });
-
 
 app.get('/register', (req, res) => {
   let token = req.cookies.token;
@@ -125,6 +118,7 @@ app.post('/connect', isAuthenticated, async (req, res) => {
     }
   }
 })
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

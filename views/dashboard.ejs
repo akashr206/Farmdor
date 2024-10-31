@@ -40,9 +40,9 @@
 
     .card:hover {
         transform: scale(1.05);
-        /* Slight zoom on hover */
+        
         box-shadow: 0 8px 15px rgba(0, 123, 0, 0.4);
-        /* Glowing effect */
+        
     }
 
     .card-body h3 {
@@ -52,7 +52,7 @@
 
     .card-body h2 {
         font-size: 3rem;
-        /* Larger number size for emphasis */
+        
     }
 
     .col-md-4 {
@@ -102,7 +102,7 @@
     </h1>
     <div class="container my-5">
         <div class="row text-center">
-            <!-- First Card -->
+            
             <div class="col-md-4 mb-4">
                 <div class="card text-white bg-success shadow h-100">
                     <div class="card-body">
@@ -115,7 +115,7 @@
                 </div>
             </div>
 
-            <!-- Second Card -->
+            
             <div class="col-md-4 mb-4">
                 <div class="card text-white bg-warning shadow h-100">
                     <div class="card-body">
@@ -127,7 +127,7 @@
                 </div>
             </div>
 
-            <!-- Third Card -->
+            
             <div class="col-md-4 mb-4">
                 <div class="card text-white bg-primary shadow h-100">
                     <div class="card-body">
@@ -146,20 +146,14 @@
     </div>
 </div>
 
-
-<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-    // Initialize the map and set its view to a chosen geographical point and zoom level
-    var map = L.map('map').setView([<%=location %>], 14);  // Default to Bangalore
-    // Add OpenStreetMap tiles
+    var map = L.map('map').setView([<%=location %>], 14); 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
     var marker = L.marker([<%= location %>]).addTo(map);
-
-    // Optionally, you can add a popup to the marker
     marker.bindPopup("<b>Your location.</b>").openPopup();
 </script>

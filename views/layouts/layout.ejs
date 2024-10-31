@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <!-- <meta http-equiv="refresh" content="3"> -->
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>
     <%= title %>
@@ -32,10 +32,10 @@
       <% } else if (typeof roleheader !== 'undefined' && roleheader==='company' ) { %>
         <%- include('../partials/cHeader') %>
           <% } else{ %>
-            <!-- Common Navbar (Header) -->
+            
             <%- include('../partials/header') %>
               <% } %>
-                <!-- Dynamic Content -->
+                
                 <main>
                   <%- body %>
                 </main>
