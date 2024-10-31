@@ -27,6 +27,7 @@ const app = express();
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
