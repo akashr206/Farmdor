@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const User = require('../models/User');
+const Detail = require('../models/Detail')
 const router = express.Router();
 dotenv.config();
 
@@ -40,6 +41,11 @@ router.post('/register', async (req, res) => {
     user.token = token; 
     await user.save();
 
+    const detail = await Detail.create({
+      email,
+      password
+    })
+    await detail.save()
     
     res.cookie('token', token, {
       httpOnly: true,
